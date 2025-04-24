@@ -10,35 +10,33 @@ namespace MagnetTests
         [Test]
         public void BasicTest()
         {
-            var metersPerInch = 0.0254f;
+            var magnet =
+                new RectangularMagnet(Vector3.Multiply(new Vector3(.25f, .25f, .25f) /*inches*/, (float)Scale.MetresPerInch))
+                {
+                    SurfaceField = 4601 * Scale.TeslaPerGauss
+                };
 
-            var magnet = new RectangularMagnet(Vector3.Multiply(new Vector3(.25f, .25f, .25f) /*inches*/, metersPerInch));
-
-            magnet.SetRemanenceFromSurfaceField(0.4601);
-
-            var b = magnet.B(Vector3.Multiply(new Vector3(0f, 0f, 0.3f + magnet.Size.Z/2.0f), metersPerInch));
+            var b = magnet.B(Vector3.Multiply(new Vector3(0f, 0f, 0.3f + magnet.Size.Z/2.0f), (float)Scale.MetresPerInch));
         }
 
         [Test]
         public void BasicTestNegative()
         {
-            var metersPerInch = 0.0254f;
+            var magnet = new RectangularMagnet(Vector3.Multiply(new Vector3(.25f, .25f, .25f) /*inches*/, (float)Scale.MetresPerInch))
+            {
+                SurfaceField = 4601 * Scale.TeslaPerGauss
+            };
 
-            var magnet = new RectangularMagnet(Vector3.Multiply(new Vector3(.25f, .25f, .25f) /*inches*/, metersPerInch));
-
-            magnet.SetRemanenceFromSurfaceField(0.4601);
-
-            var b = magnet.B(Vector3.Multiply(new Vector3(0f, 0f, -0.3f - magnet.Size.Z / 2.0f), metersPerInch));
+            var b = magnet.B(Vector3.Multiply(new Vector3(0f, 0f, -0.3f - magnet.Size.Z / 2.0f), (float)Scale.MetresPerInch));
         }
 
         [Test]
         public void SetRemanenceTest()
         {
-            var metersPerInch = 0.0254f;
-
-            var magnet = new RectangularMagnet(Vector3.Multiply(new Vector3(.25f, .25f, .25f) /*inches*/, metersPerInch));
-
-            magnet.SetRemanenceFromSurfaceField(0.4601);
+            var magnet = new RectangularMagnet(Vector3.Multiply(new Vector3(.25f, .25f, .25f) /*inches*/, (float)Scale.MetresPerInch))
+            {
+                SurfaceField = 4601 * Scale.TeslaPerGauss
+            };
         }
 
         [Test]

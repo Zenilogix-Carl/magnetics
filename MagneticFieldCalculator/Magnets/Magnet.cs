@@ -4,26 +4,33 @@ namespace Magnets
 {
     public abstract class Magnet
     {
-        public const double Mu0 = 4 * Math.PI * 1e-7;  // Permeability of free space
+        /// <summary>
+        /// Permeability of free space
+        /// </summary>
+        public const double Mu0 = 4 * Math.PI * 1e-7;
 
         /// <summary>
-        /// Remanence
+        /// Remanence (Tesla)
         /// </summary>
         public double Remanence { get; set; }
 
         /// <summary>
-        /// Field strength at specified position; pole aligned to Z axis
+        /// Surface field (Tesla)
         /// </summary>
-        /// <param name="position"></param>
+        public abstract double SurfaceField { get; set; }
+
+        /// <summary>
+        /// Field strength at specified position (Henry); pole aligned to Z axis (Henry = A/m)
+        /// </summary>
+        /// <param name="position">Position in metres</param>
         /// <returns></returns>
         public abstract Vector3 H(Vector3 position);
 
         /// <summary>
-        /// Sets remanence from surface field strength at pole
+        /// Field strength at specified position (Tesla); pole aligned to Z axis
         /// </summary>
-        /// <param name="fieldStrength">Field strength in Tesla</param>
-        public abstract void SetRemanenceFromSurfaceField(double fieldStrength);
-
+        /// <param name="position">Position in metres</param>
+        /// <returns>Field vector (Tesla)</returns>
         public Vector3 B(Vector3 position)
         {
             return Vector3.Multiply(H(position), (float)Mu0);
@@ -34,12 +41,10 @@ namespace Magnets
         /// </summary>
         /// <param name="fieldStrength">Tesla</param>
         /// <param name="distance">Distance from magnet center along Z (magnetization) axis</param>
-        public void SetRemanenceFromField(double fieldStrength, double distance)
+        protected void SetRemanenceFromField(double fieldStrength, double distance)
         {
             Remanence = 1;
-            var position = new Vector3(0, 0, (float)distance);
-            var b = B(position);
-            Remanence = fieldStrength / b.Z;
+            Remanence = fieldStrength / B(new Vector3(0, 0, (float)distance)).Z;
         }
     }
 }

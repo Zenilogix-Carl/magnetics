@@ -6,7 +6,8 @@ namespace Magnets
     /// A rectangular magnet
     /// </summary>
     /// <remarks>
-    /// From https://www.e-magnetica.pl/doku.php/calculator/field_of_cuboid_magnet_or_rectangular_solenoid
+    /// From: https://www.e-magnetica.pl/doku.php/calculator/field_of_cuboid_magnet_or_rectangular_solenoid
+    /// Based on: https://doi.org/10.1063/5.0010982
     /// </remarks>
     public class RectangularMagnet : Magnet
     {
@@ -35,6 +36,14 @@ namespace Magnets
             Size = size;
         }
 
+        /// <inheritdoc />
+        public override double SurfaceField
+        {
+            get => B(new Vector3(0,0,Size.Z/2.0f)).Z;
+            set => SetRemanenceFromField(value, Size.Z / 2.0);
+        }
+
+        /// <inheritdoc />
         public override Vector3 H(Vector3 position)
         {
             var h0 = Remanence / Mu0; // magnetic field strength
@@ -65,12 +74,7 @@ namespace Magnets
                                  + Math.Atan(((position.Y + _a.Y * SignFunc(j + 1)) * (position.Z + _a.Z * SignFunc(k + 1))) / (r * (position.X + _a.X * SignFunc(i + 1)))));
                      });
 
-            return new Vector3((float)hx, (float)hy, (float)hz);
-        }
-
-        public override void SetRemanenceFromSurfaceField(double fieldStrength)
-        {
-            SetRemanenceFromField(fieldStrength, Size.Z/2.0);
+            return new Vector3((float)(position.X < 0 ? -hx : hx), (float)(position.Y < 0 ? -hy : hy), (float)(position.Z < 0 ? -hz : hz));
         }
 
         private static double Summation(Func<int, int, int, double> func)
