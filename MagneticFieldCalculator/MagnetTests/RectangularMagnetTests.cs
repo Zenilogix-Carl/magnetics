@@ -47,8 +47,6 @@ namespace MagnetTests
                 Remanence = 1.0555
             };
 
-            //magnet.SetRemanenceFromSurfaceField(0.4601);
-
             var h = magnet.H(new Vector3(0f, 0f, magnet.Size.Z));
         }
 
@@ -59,7 +57,7 @@ namespace MagnetTests
             var q = Quaternion.CreateFromAxisAngle(new Vector3(0, 0, 1), (float)(0 * Scale.DegreesToRadians));
             testPoint = Vector2.Transform(testPoint, q);
 
-            var m1 = new MagnetPosition2(new CubicMagnet((float)(0.25 * Scale.MetresPerInch))
+            var m1 = new MagnetWithPosition2<CubicMagnet>(new CubicMagnet((float)(0.25 * Scale.MetresPerInch))
             {
                 SurfaceField = 4601 * Scale.TeslaPerGauss
             }, new Vector2(0, 0))

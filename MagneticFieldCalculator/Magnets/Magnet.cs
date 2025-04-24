@@ -3,28 +3,24 @@ using System.Numerics;
 
 namespace Magnets
 {
-    public abstract class Magnet
+    public abstract class Magnet : IMagnet
     {
         /// <summary>
         /// Permeability of free space
         /// </summary>
         public const double Mu0 = 4 * Math.PI * 1e-7;
 
-        /// <summary>
-        /// Remanence (Tesla)
-        /// </summary>
+        /// <inheritdoc />
         public double Remanence { get; set; }
 
-        /// <summary>
-        /// Surface field (Tesla)
-        /// </summary>
+        /// <inheritdoc />
         public abstract double SurfaceField { get; set; }
 
         /// <summary>
         /// Field strength at specified position (Henry); pole aligned to Z axis (Henry = A/m)
         /// </summary>
         /// <param name="position">Position in metres</param>
-        /// <returns></returns>
+        /// <returns>Magnetization vector (Henry)</returns>
         public abstract Vector3 H(Vector3 position);
 
         /// <summary>
@@ -32,10 +28,10 @@ namespace Magnets
         /// </summary>
         /// <param name="position">Position in metres</param>
         /// <returns>Field vector (Tesla)</returns>
-        public Vector3 B(Vector3 position)
-        {
-            return Vector3.Multiply(H(position), (float)Mu0);
-        }
+        public Vector3 B(Vector3 position) => HToB(H(position));
+
+        public static Vector3 HToB(Vector3 h) => Vector3.Multiply(h, (float)Mu0);
+        public static Vector2 HToB(Vector2 h) => Vector2.Multiply(h, (float)Mu0);
 
         /// <summary>
         /// Computes and sets remanence from given field strength and distance
@@ -45,7 +41,7 @@ namespace Magnets
         protected void SetRemanenceFromField(double fieldStrength, double distance)
         {
             Remanence = 1;
-            Remanence = fieldStrength / B(new Vector3(0, 0, (float)distance)).Z;
+            Remanence = fieldStrength / SurfaceField;
         }
     }
 }
