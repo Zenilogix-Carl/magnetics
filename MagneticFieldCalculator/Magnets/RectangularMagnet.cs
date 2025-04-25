@@ -41,13 +41,13 @@ namespace Magnets
         public override double SurfaceField
         {
             get => B(new Vector3(0,0,Size.Z/2.0f)).Z;
-            set => SetRemanenceFromField(value, Size.Z / 2.0);
+            set => base.SurfaceField = value;
         }
 
         /// <inheritdoc />
         public override Vector3 H(Vector3 position)
         {
-            var h0 = Remanence / Mu0; // magnetic field strength
+            var h0 = Remanence / Constants.Mu0; // magnetic field strength
             var hx = (h0 / (8.0 * Math.PI)) *
                      Summation((i, j, k) =>
                      {

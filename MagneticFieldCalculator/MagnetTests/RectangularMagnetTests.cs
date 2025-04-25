@@ -11,31 +11,31 @@ namespace MagnetTests
         public void BasicTest()
         {
             var magnet =
-                new RectangularMagnet(Vector3.Multiply(new Vector3(.25f, .25f, .25f) /*inches*/, (float)Scale.MetresPerInch))
+                new RectangularMagnet(Vector3.Multiply(new Vector3(.25f, .25f, .25f) /*inches*/, (float)Constants.MetresPerInch))
                 {
-                    SurfaceField = 4601 * Scale.TeslaPerGauss
+                    SurfaceField = 4601 * Constants.TeslaPerGauss
                 };
 
-            var b = magnet.B(Vector3.Multiply(new Vector3(0f, 0f, 0.3f + magnet.Size.Z/2.0f), (float)Scale.MetresPerInch));
+            var b = magnet.B(Vector3.Multiply(new Vector3(0f, 0f, 0.3f + magnet.Size.Z/2.0f), (float)Constants.MetresPerInch));
         }
 
         [Test]
         public void BasicTestNegative()
         {
-            var magnet = new RectangularMagnet(Vector3.Multiply(new Vector3(.25f, .25f, .25f) /*inches*/, (float)Scale.MetresPerInch))
+            var magnet = new RectangularMagnet(Vector3.Multiply(new Vector3(.25f, .25f, .25f) /*inches*/, (float)Constants.MetresPerInch))
             {
-                SurfaceField = 4601 * Scale.TeslaPerGauss
+                SurfaceField = 4601 * Constants.TeslaPerGauss
             };
 
-            var b = magnet.B(Vector3.Multiply(new Vector3(0f, 0f, -0.3f - magnet.Size.Z / 2.0f), (float)Scale.MetresPerInch));
+            var b = magnet.B(Vector3.Multiply(new Vector3(0f, 0f, -0.3f - magnet.Size.Z / 2.0f), (float)Constants.MetresPerInch));
         }
 
         [Test]
         public void SetRemanenceTest()
         {
-            var magnet = new RectangularMagnet(Vector3.Multiply(new Vector3(.25f, .25f, .25f) /*inches*/, (float)Scale.MetresPerInch))
+            var magnet = new RectangularMagnet(Vector3.Multiply(new Vector3(.25f, .25f, .25f) /*inches*/, (float)Constants.MetresPerInch))
             {
-                SurfaceField = 4601 * Scale.TeslaPerGauss
+                SurfaceField = 4601 * Constants.TeslaPerGauss
             };
         }
 
@@ -53,16 +53,16 @@ namespace MagnetTests
         [Test]
         public void RotationTest()
         {
-            var testPoint = new Vector2((float)(0.5 * Scale.MetresPerInch), 0);
-            var q = Quaternion.CreateFromAxisAngle(new Vector3(0, 0, 1), (float)(0 * Scale.DegreesToRadians));
+            var testPoint = new Vector2((float)(0.5 * Constants.MetresPerInch), 0);
+            var q = Quaternion.CreateFromAxisAngle(new Vector3(0, 0, 1), (float)(0 * Constants.RadiansPerDegree));
             testPoint = Vector2.Transform(testPoint, q);
 
-            var m1 = new MagnetWithPosition2<CubicMagnet>(new CubicMagnet((float)(0.25 * Scale.MetresPerInch))
+            var m1 = new MagnetWithPosition2<CubicMagnet>(new CubicMagnet((float)(0.25 * Constants.MetresPerInch))
             {
-                SurfaceField = 4601 * Scale.TeslaPerGauss
+                SurfaceField = 4601 * Constants.TeslaPerGauss
             }, new Vector2(0, 0))
             {
-                Orientation = 0
+                Orientation = 180
             };
 
             var b = m1.B(testPoint);
