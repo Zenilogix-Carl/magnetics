@@ -13,17 +13,31 @@ namespace Magnets
         /// <summary>
         /// Position in 2D space (units in metres)
         /// </summary>
-        public Vector2 Position { get; }
+        public Vector2 Position { get; set; }
 
         /// <summary>
-        /// Orientation in degrees. Zero places the magnet's pole on the co-ordinate system X axis
+        /// Orientation in degrees. Zero aligns the magnet's pole with the co-ordinate system X axis
         /// </summary>
         public double Orientation { get; set; }
 
-        public MagnetWithPosition2(IMagnet magnet, Vector2 vector2)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public MagnetWithPosition2()
+        {
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="magnet">Underlying magnet</param>
+        /// <param name="position">Initial position in 2D space</param>
+        /// <param name="orientation">Orientation angle (degrees)</param>
+        public MagnetWithPosition2(IMagnet magnet, Vector2 position, double orientation)
         {
             Magnet = magnet;
-            Position = vector2;
+            Position = position;
+            Orientation = orientation;
         }
 
         /// <inheritdoc />

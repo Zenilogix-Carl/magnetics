@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35828.75 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Magnets", "Magnets\Magnets.csproj", "{BBBD9415-171C-F163-5760-5E55190DC2A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensorSimulator", "SensorSimulator\SensorSimulator.csproj", "{F42B2977-6E2F-7797-BEBD-C6F912AA22F1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BBBD9415-171C-F163-5760-5E55190DC2A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBBD9415-171C-F163-5760-5E55190DC2A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBBD9415-171C-F163-5760-5E55190DC2A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBBD9415-171C-F163-5760-5E55190DC2A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F42B2977-6E2F-7797-BEBD-C6F912AA22F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F42B2977-6E2F-7797-BEBD-C6F912AA22F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F42B2977-6E2F-7797-BEBD-C6F912AA22F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F42B2977-6E2F-7797-BEBD-C6F912AA22F1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {92256029-30E1-45BB-9C0A-99B42FC50FD2}
+	EndGlobalSection
+EndGlobal

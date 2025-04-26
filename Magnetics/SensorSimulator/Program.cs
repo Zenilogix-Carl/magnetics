@@ -30,21 +30,30 @@ namespace SensorSimulator
             var m1 = CreateMagnet(new Vector2((float)(1.05 * Constants.MetresPerInch), 0).Rotate(30), 30);
             var m2 = CreateMagnet(new Vector2((float)(1.05 * Constants.MetresPerInch), 0).Rotate(-30), 180 - 30);
 
+            var sensor = new Sensor2D
+            {
+                Sensitivity = 100, // mV/mT
+                OutputMinimum = 0, // V
+                OutputMaximum = 5.0, // V
+                QuiescentOutput = 2.5 // V
+            };
+
             var sensorNominalPosition = new Vector2((float)(0.595 * Constants.MetresPerInch), 0);
 
             Console.WriteLine($"Angle, B(mT) V");
             for (var i = -30; i <= 30; i += 5)
             {
-                var sensorPosition = sensorNominalPosition.Rotate(i);
-                var bT = (m1.B(sensorPosition) + m2.B(sensorPosition)).Rotate(-i);
-                var bmT = bT * 1000;
-                var v = (bT.X * 100) + 2.5; // sensor model; 100mV/mT quiescent at Vcc/2, Vcc = 5V
-                Console.WriteLine($"{i}, {bmT.X:F1} {v:F2}");
+                sensor.Position = sensorNominalPosition.Rotate(i);
+                sensor.Orientation = i;
+                var bSum = m1.B(sensor.Position) + m2.B(sensor.Position); // combined field at sensor location
+                var bSensor = sensor.GetFieldComponent(bSum); // component of bSum sensed by sensor
+                var v = sensor.GetOutput(bSum); // sensor output (V)
+                Console.WriteLine($"{i}, {bSensor * 1000:F1} {v:F2}"); // show field strength in mT
             }
         }
 
         /// <summary>
-        /// Creates a magnet representative of a real-world 0.25" cubic Neodymium magnet having a 4601 Gauss surface field
+        /// Creates a simulation of a real-world 0.25" cubic Neodymium magnet having a 4601 Gauss surface field
         /// placed in a 2D space
         /// </summary>
         /// <param name="position">Where in our 2D co-ordinate system the magnet is placed</param>
@@ -52,11 +61,7 @@ namespace SensorSimulator
         /// <returns>The created magnet</returns>
         private static MagnetWithPosition2 CreateMagnet(Vector2 position, double orientation)
         {
-            return new MagnetWithPosition2(new CubicMagnet((float)(0.25 * Constants.MetresPerInch)), position)
-            {
-                Orientation = orientation,
-                SurfaceField = 4601 * Constants.TeslaPerGauss
-            };
+            return new MagnetWithPosition2(new CubicMagnet((float)(0.25 * Constants.MetresPerInch)){SurfaceField = 4601 * Constants.TeslaPerGauss}, position, orientation);
         }
     }
 }
