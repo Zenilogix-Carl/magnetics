@@ -19,5 +19,19 @@ namespace Magnets
         /// <param name="position">Test position in magnet's local co-ordinate system based on magnet center (values in metres)</param>
         /// <returns>Flux density (Tesla) as a vector in two-dimensional space.</returns>
         public static Vector2 B(this IMagnet magnet, Vector2 position) => magnet.B(position.ToVector3()).ToVector2();
+
+        /// <summary>
+        /// Computes B (flux density) from H (magnetization) for free space
+        /// </summary>
+        /// <param name="vector">H field strength vector</param>
+        /// <returns>Flux density vector (Tesla)</returns>
+        public static Vector3 HToB(this Vector3 vector) => Vector3.Multiply(vector, (float)Constants.Mu0);
+
+        /// <summary>
+        /// Computes B (flux density) from H (magnetization) for free space
+        /// </summary>
+        /// <param name="vector">H field strength vector</param>
+        /// <returns>Flux density vector (Tesla)</returns>
+        public static Vector2 HToB(this Vector2 vector) => Vector2.Multiply(vector, (float)Constants.Mu0);
     }
 }

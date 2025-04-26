@@ -11,6 +11,11 @@ namespace Magnets
         public const double MetresPerInch = 0.0254;
 
         /// <summary>
+        /// Multiply a value in metres by this to obtain a result in inches
+        /// </summary>
+        public const double InchesPerMeter = 1.0 / MetresPerInch;
+
+        /// <summary>
         /// Multiply a value in Tesla by this to obtain a result in Gauss
         /// </summary>
         public const double GaussPerTesla = 10000;

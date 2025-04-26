@@ -54,10 +54,8 @@ namespace MagnetTests
         public void RotationTest()
         {
             var testPoint = new Vector2((float)(0.5 * Constants.MetresPerInch), 0);
-            var q = Quaternion.CreateFromAxisAngle(new Vector3(0, 0, 1), (float)(0 * Constants.RadiansPerDegree));
-            testPoint = Vector2.Transform(testPoint, q);
 
-            var m1 = new MagnetWithPosition2<CubicMagnet>(new CubicMagnet((float)(0.25 * Constants.MetresPerInch))
+            var m1 = new MagnetWithPosition2(new CubicMagnet((float)(0.25 * Constants.MetresPerInch))
             {
                 SurfaceField = 4601 * Constants.TeslaPerGauss
             }, new Vector2(0, 0))
@@ -66,6 +64,45 @@ namespace MagnetTests
             };
 
             var b = m1.B(testPoint);
+        }
+
+        [Test]
+        public void CircleTest()
+        {
+            var magnet = CreateStandardMagnet(new Vector2(0, 0), 0);
+            var nominalPosition = new Vector2((float)(0.25 * Constants.MetresPerInch),0);
+            for (var i = 0; i < 360; i+=10)
+            {
+                var testPoint = nominalPosition.Rotate(i);
+                var b = magnet.B(testPoint);
+                var bR = b.Rotate(-i);
+                Console.WriteLine($"Angle: {i} Test Point: ({testPoint.X*Constants.InchesPerMeter:F3}, {testPoint.Y * Constants.InchesPerMeter:F3}) B:({b.X*1000:F1}, {b.Y*1000:F1})mT  Br:({bR.X * 1000:F1}, {bR.Y * 1000:F1})mT");
+            }
+        }
+
+        [Test]
+        public void SensorTest()
+        {
+            var m1 = CreateStandardMagnet(new Vector2((float)(1 * Constants.MetresPerInch), 0).Rotate(30), 30);
+            var m2 = CreateStandardMagnet(new Vector2((float)(1 * Constants.MetresPerInch), 0).Rotate(-30), 180-30);
+
+            var sensorNominalPosition = new Vector2((float)(0.75 * Constants.MetresPerInch));
+
+            for (var i = -30; i <= 30; i+= 5)
+            {
+                var sensorPosition = sensorNominalPosition.Rotate(i);
+                var b = m1.B(sensorPosition) + m2.B(sensorPosition).Rotate(-i);
+                Console.WriteLine($"Angle: {i}  B: {b.X * 1000}mT");
+            }
+        }
+
+        private static MagnetWithPosition2 CreateStandardMagnet(Vector2 position, double orientation)
+        {
+            return new MagnetWithPosition2(new CubicMagnet((float)(0.25 * Constants.MetresPerInch)), position)
+            {
+                Orientation = orientation,
+                SurfaceField = 4601 * Constants.TeslaPerGauss
+            };
         }
     }
 }
