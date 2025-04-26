@@ -1,0 +1,42 @@
+# Magnetics
+This repo contains a C# class library for calculating the field around a magnet. It is an unfinished work, and currently only models rectangular magnets.
+
+## Background
+I wanted to design a sensor which could measure the rotation (angular position) as one part of an assembly is rotated within another. 
+For reliability, I chose to base my design on a linear Hall effect sensor moving with respect to a couple of magnets. To begin, I experimented with a couple of 0.25" cubic neodymium magnets and a DRV5055 Hall sensor.
+My experimental rig was set up like the illustration below:
+
+![Sensor setup](/Magnetics/SensorSimulator/SensorSetup.png)
+
+In my test rig, the magnets moved and the sensor was fixed, but we can think of it as follows:
+
+* Two magnets are placed a set distance from an axis of rotation.
+* One magnet has its north pole facing the axis, the other has its south pole facing the axis
+* The sensor moves on an arc always facing out from the axis
+* The sensor will detect a more "north" or a more "south" field, depending which pole it is most directly facing, and will be quiescent at the midpoint between the magnets where their effects cancel out.
+
+The rig gave me some basic information but I needed to make refinements. 
+I thought it would be a good idea to try to mathematically model the setup to guide my design efforts.
+After some reasearch I found a website [here](https://www.e-magnetica.pl/doku.php/calculator/field_of_cuboid_magnet_or_rectangular_solenoid) based on a paper [here](https://doi.org/10.1063/5.0010982) 
+which set out formulas for calculating the field around rectangular magnets. This library implements those formulas in a way that I hope can be extended for other magnet shapes.
+This repo includes the mathematical model of my test rig; its output matches values I recorded from the actual rig closely enough that I consider the model valid, and useful for my design efforts.
+For what it's worth I've included a chart of the model output below (note that sign reflects the orientation of the field):
+
+![SensorModelOutput](/Magnetics/SensorSimulator/Response.png)
+
+## The Magnets Library
+
+The library contains a framework for modeling the fields around magnets of different shapes, although it currently only implements a model for rectangular magnets.
+* **IMagnet** is the interface for a magnet, predicated on the notion that all magnets have a scalar **remanence** property, a related scalar **surface field** property, and have **H** and **B** field vectors for any given point in space
+(both **H** and **B** are vectors in 3D space). Position and field vectors are with respect to the magnet; magnetization is along the Z axis.
+* **Magnet** is an abstract class implementing **IMagnet** and intrduces a few traits and behaviors common to any magnet
+* **RectangularMagnet** derivess from **Magnet** and implements the calculations specific to a rectangular magnet per the references cited above
+* **MagnetWithPosition2** implements a magnet positioned and oriented in a 2D space to faciliate 2D simulation.
+* **CubicMagnet** is a convenience class derived from **RectangularMagnet** to simplify dimensioning.
+* **Constants** contains various useful unit conversion values in addition to physical constants
+* **GeometryHelper** and **MagnetHelper** contain extension methods which include support for projection from 3D to 2D. Since the referenced site/paper use a convention in which magnetization is along the Z axis,
+the mapping convention used here keeps the Y axis intact and maps the Z axis from 3D space onto the X axis in 2D space (the 3D X axis disappears).
+  
+## The SensorSimulator Application
+
+This is a simple console app which models my test rig. It outputs both the B vector component experienced by the sensor and the expected voltage value for a range of angular positions
