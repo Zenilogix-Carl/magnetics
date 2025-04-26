@@ -25,13 +25,13 @@ namespace Magnets
         /// </summary>
         /// <param name="vector">H field strength vector</param>
         /// <returns>Flux density vector (Tesla)</returns>
-        public static Vector3 HToB(this Vector3 vector) => Vector3.Multiply(vector, (float)Constants.Mu0);
+        public static Vector3 HToB(this Vector3 vector) => vector * (float)Constants.Mu0;
 
         /// <summary>
         /// Computes B (flux density) from H (magnetization) for free space
         /// </summary>
         /// <param name="vector">H field strength vector</param>
         /// <returns>Flux density vector (Tesla)</returns>
-        public static Vector2 HToB(this Vector2 vector) => Vector2.Multiply(vector, (float)Constants.Mu0);
+        public static Vector2 HToB(this Vector2 vector) => vector * (float)Constants.Mu0;
     }
 }

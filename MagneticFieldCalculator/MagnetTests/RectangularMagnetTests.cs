@@ -69,34 +69,44 @@ namespace MagnetTests
         [Test]
         public void CircleTest()
         {
-            var magnet = CreateStandardMagnet(new Vector2(0, 0), 0);
-            var nominalPosition = new Vector2((float)(0.25 * Constants.MetresPerInch),0);
+            var magnet = CreateMagnet(new Vector2(0, 0), 0);
+            var nominalPosition = new Vector2((float)(0.3 * Constants.MetresPerInch),0);
             for (var i = 0; i < 360; i+=10)
             {
                 var testPoint = nominalPosition.Rotate(i);
                 var b = magnet.B(testPoint);
                 var bR = b.Rotate(-i);
-                Console.WriteLine($"Angle: {i} Test Point: ({testPoint.X*Constants.InchesPerMeter:F3}, {testPoint.Y * Constants.InchesPerMeter:F3}) B:({b.X*1000:F1}, {b.Y*1000:F1})mT  Br:({bR.X * 1000:F1}, {bR.Y * 1000:F1})mT");
+                Console.WriteLine($"Angle: {i} Test Point: ({testPoint.X*Constants.InchesPerMeter:F3}, {testPoint.Y * Constants.InchesPerMeter:F3}) B:({b.X*1000:F1}, {b.Y*1000:F1})mT  BrX:{bR.X * 1000:F1}mT");
             }
         }
 
         [Test]
         public void SensorTest()
         {
-            var m1 = CreateStandardMagnet(new Vector2((float)(1 * Constants.MetresPerInch), 0).Rotate(30), 30);
-            var m2 = CreateStandardMagnet(new Vector2((float)(1 * Constants.MetresPerInch), 0).Rotate(-30), 180-30);
+            var m1 = CreateMagnet(new Vector2((float)(1.05 * Constants.MetresPerInch), 0).Rotate(30), 30);
+            var m2 = CreateMagnet(new Vector2((float)(1.05 * Constants.MetresPerInch), 0).Rotate(-30), 180-30);
 
-            var sensorNominalPosition = new Vector2((float)(0.75 * Constants.MetresPerInch));
+            var sensorNominalPosition = new Vector2((float)(0.595 * Constants.MetresPerInch), 0);
 
+            Console.WriteLine($"Angle, B(mT) V");
             for (var i = -30; i <= 30; i+= 5)
             {
                 var sensorPosition = sensorNominalPosition.Rotate(i);
-                var b = m1.B(sensorPosition) + m2.B(sensorPosition).Rotate(-i);
-                Console.WriteLine($"Angle: {i}  B: {b.X * 1000}mT");
+                var bT = (m1.B(sensorPosition) + m2.B(sensorPosition)).Rotate(-i);
+                var bmT = bT * 1000;
+                var v = (bT.X * 100) + 2.5; // sensor model; 100mV/mT quiescent at Vcc/2, Vcc = 5V
+                Console.WriteLine($"{i}, {bmT.X:F1} {v:F2}");
             }
         }
 
-        private static MagnetWithPosition2 CreateStandardMagnet(Vector2 position, double orientation)
+        /// <summary>
+        /// Creates a magnet representative of a real-world 0.25" cubic Neodymium magnet having a 4601 Gauss surface field
+        /// placed in a 2D space
+        /// </summary>
+        /// <param name="position">Where in our 2D co-ordinate system the magnet is placed</param>
+        /// <param name="orientation">Magnet's orientation in our 2D space</param>
+        /// <returns>The created magnet</returns>
+        private static MagnetWithPosition2 CreateMagnet(Vector2 position, double orientation)
         {
             return new MagnetWithPosition2(new CubicMagnet((float)(0.25 * Constants.MetresPerInch)), position)
             {

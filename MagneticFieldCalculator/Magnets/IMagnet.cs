@@ -14,8 +14,6 @@ namespace Magnets
         /// <summary>
         /// Gets or sets the magnet's surface field (Tesla)
         /// </summary>
-        /// <remarks>Throws <see cref="System.NotImplementedException"/> if getter not implemented.
-        /// Default setter computes remanence, but depends on getter implementation</remarks>
         double SurfaceField { get; set; }
 
         /// <summary>

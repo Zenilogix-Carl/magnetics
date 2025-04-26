@@ -75,8 +75,7 @@ namespace Magnets
                                  + Math.Atan(((position.Y + _a.Y * SignFunc(j + 1)) * (position.Z + _a.Z * SignFunc(k + 1))) / (r * (position.X + _a.X * SignFunc(i + 1)))));
                      });
 
-            // TODO: Find out if this is the correct/best way to handle pole north/south
-            return new Vector3((float)(position.X < 0 ? -hx : hx), (float)(position.Y < 0 ? -hy : hy), (float)(position.Z < 0 ? -hz : hz));
+            return new Vector3((float)hx, (float)hy, (float)hz);
         }
 
         private static double Summation(Func<int, int, int, double> func)
