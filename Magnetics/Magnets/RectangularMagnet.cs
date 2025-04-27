@@ -40,7 +40,7 @@ namespace Magnets
         /// <inheritdoc />
         public override double SurfaceField
         {
-            get => B(new Vector3(0,0,Size.Z/2.0f)).Z;
+            get => B(new Vector3(0,0,_a.Z)).Z;
             set => base.SurfaceField = value;
         }
 
