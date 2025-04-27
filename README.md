@@ -31,11 +31,11 @@ The library contains a framework for modeling the fields around magnets of diffe
 (both **H** and **B** are vectors in 3D space). Position and field vectors are with respect to the magnet; magnetization is along the Z axis.
 * **Magnet** is an abstract class implementing **IMagnet** and intrduces a few traits and behaviors common to any magnet
 * **RectangularMagnet** derivess from **Magnet** and implements the calculations specific to a rectangular magnet per the references cited above
-* **MagnetWithPosition2** implements a magnet positioned and oriented in a 2D space to faciliate 2D simulation.
+* **MagnetWithPosition2** derives from **IMagnet** and implements a wrapper around a given magnet to position and orient it in a 2D space to faciliate 2D modeling.
 * **CubicMagnet** is a convenience class derived from **RectangularMagnet** to simplify dimensioning.
 * **Constants** contains various useful unit conversion values in addition to physical constants
 * **GeometryHelper** and **MagnetHelper** contain extension methods which include support for projection from 3D to 2D. Since the referenced site/paper use a convention in which magnetization is along the Z axis,
-the mapping convention used here keeps the Y axis intact and maps the Z axis from 3D space onto the X axis in 2D space (the 3D X axis disappears).
+the mapping convention used here keeps the Y axis intact and maps the Z axis from 3D space onto the X axis in 2D space (the projection removes the X axis).
   
 ## The SensorSimulator Application
 
