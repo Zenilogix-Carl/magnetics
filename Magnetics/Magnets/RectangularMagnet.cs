@@ -80,20 +80,7 @@ namespace Magnets
 
         private static double Summation(Func<int, int, int, double> func)
         {
-            double sum = 0;
-
-            for (var i = 0; i <= 1; i++)
-            {
-                for (var j = 0; j <= 1; j++)
-                {
-                    for (var k = 0; k <= 1; k++)
-                    {
-                        sum += func(i, j, k);
-                    }
-                }
-            }
-
-            return sum;
+            return func(0, 0, 0) + func(0, 0, 1) + func(0, 1, 0) + func(0, 1, 1) + func(1, 0, 0) + func(1, 0, 1) + func(1, 1, 0) + func(1, 1, 1);
         }
 
         private static double Squared(double a)
