@@ -29,8 +29,8 @@ For what it's worth I've included a chart of the model output below (note that s
 The library contains a framework for modeling the fields around magnets of different shapes, although it currently only implements a model for rectangular magnets.
 * **IMagnet** is the interface for a magnet, predicated on certain assumptions and notions:
   * Uniform magnetization
-  * Magnets have a scalar **remanence** property and a related scalar **surface field** property, notionally the magnitude of the **B** vector at the point where the magnetization axis intersects the magnet's surface
-  * Magnets produce **H** and **B** fields resulting in **H** and **B** vectors at any given point in 3D space
+  * Magnets have a scalar **remanence** property and a related scalar **surface field** property, notionally the magnitude of the **B** (flux density) vector at the point where the magnetization axis intersects the magnet's surface
+  * Magnets produce **H** (magnetic field intensity) and **B** (magnetic flux density) fields resulting in **H** and **B** vectors at any given point in 3D space
   * Position and field vectors are with respect to the magnet; magnetization is along the Z axis.
 * **Magnet** is an abstract class implementing **IMagnet** and introduces a few traits and behaviors common to any magnet
 * **RectangularMagnet** derivess from **Magnet** and implements the calculations specific to a rectangular magnet per the references cited above
