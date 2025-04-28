@@ -10,9 +10,9 @@ My experimental rig was set up like the illustration below:
 
 In my test rig, the magnets moved and the sensor was fixed, but we can think of it as follows:
 
-* Two magnets are placed a set distance from an axis of rotation.
+* Two magnets are placed a set distance from an axis of rotation; in other words, both magnets lie on an arc at some radius from the axis.
 * One magnet has its north pole facing the axis, the other has its south pole facing the axis
-* The sensor moves on an arc always facing out from the axis
+* The sensor moves on an arc inside the arc of the magnets and is always facing directly away from the axis
 * The sensor will detect a more "north" or a more "south" field, depending which pole it is most directly facing, and will be quiescent at the midpoint between the magnets where their effects cancel out.
 
 The rig gave me some basic information but I needed to make refinements. 
@@ -37,8 +37,12 @@ The library contains a framework for modeling the fields around magnets of diffe
 * **MagnetWithPosition2** derives from **IMagnet** and implements a wrapper around a given magnet to position and orient it in a 2D space to faciliate 2D modeling.
 * **CubicMagnet** is a convenience class derived from **RectangularMagnet** to simplify dimensioning.
 * **Constants** contains various useful unit conversion values in addition to physical constants
-* **GeometryHelper** and **MagnetHelper** contain extension methods which include support for projection from 3D to 2D. Since the referenced site/paper use a convention in which magnetization is along the Z axis,
-the mapping convention used here keeps the Y axis intact and maps the Z axis from 3D space onto the X axis in 2D space (the projection removes the X axis).
+* **GeometryHelper** and **MagnetHelper** contain extension methods which include support for projection from 3D to 2D and corresponding inverses.
+Since the referenced site/paper use a convention in which magnetization is along the Z axis,
+the mapping convention used here is as follows:
+  * The X axis in 3D space is removed by the projection so is not represented in the 2D space.
+  * The Y axis in 3D space is preserved by the projection into the 2D space.
+  * The Z axis in 3D space is projected onto the X axis in the 2D space.
   
 ## The SensorSimulator Application
 
