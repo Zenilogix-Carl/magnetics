@@ -3,38 +3,30 @@ using System.Numerics;
 
 namespace Magnets
 {
+    /// <summary>
+    /// A simple dipole based on equations for a rectangular magnet.
+    /// </summary>
+    /// <remarks>This is based on the equations for a rectangular magnet of zero size, removing all resulting zero terms.
+    /// I don't know if this is correct.
+    /// We do not override SurfaceField because zero size implies that there is no surface.
+    /// </remarks>
     public class SimpleDipole : Magnet
     {
         /// <inheritdoc />
         public override Vector3 H(Vector3 position)
         {
+            var r = RadiusValue(position);
             var h0 = Remanence / Constants.Mu0; // magnetic field strength
             var hx = h0 / (8.0 * Math.PI) *
-                     Summation((i, j, k) =>
-                     {
-                         var r = RadiusValue(position);
-                         return SignFunc(i + j + k) * Math.Log(
-                             (r - position.Y)
-                             / (r + position.Y));
-                     });
+                     Summation((i, j, k) => SignFunc(i + j + k) * Math.Log((r - position.Y) / (r + position.Y)));
 
             var hy = h0 / (8.0 * Math.PI) *
-                     Summation((i, j, k) =>
-                     {
-                         var r = RadiusValue(position);
-                         return SignFunc(i + j + k) * Math.Log(
-                             (r - position.X)
-                             / (r + position.X));
-                     });
+                     Summation((i, j, k) => SignFunc(i + j + k) * Math.Log((r - position.X) / (r + position.X)));
 
             var hz = h0 / (4.0 * Math.PI) *
-                     Summation((i, j, k) =>
-                     {
-                         var r = RadiusValue(position);
-                         return SignFunc(i + j + k + 1) *
-                                (Math.Atan(position.X * position.Z / (r * position.Y))
-                                 + Math.Atan(position.Y * position.Z / (r * position.X)));
-                     });
+                     Summation((i, j, k) => SignFunc(i + j + k + 1) *
+                                            (Math.Atan(position.X * position.Z / (r * position.Y))
+                                             + Math.Atan(position.Y * position.Z / (r * position.X))));
 
             return new Vector3((float)hx, (float)hy, (float)hz);
         }
@@ -54,7 +46,7 @@ namespace Magnets
         /// </summary>
         /// <param name="position"></param>
         /// <returns></returns>
-        private double RadiusValue(Vector3 position)
+        private static double RadiusValue(Vector3 position)
         {
             return Math.Sqrt(
                 Squared(position.X)
