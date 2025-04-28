@@ -33,7 +33,8 @@ The library contains a framework for modeling the fields around magnets of diffe
   * Magnets produce **H** (magnetic field intensity) and **B** (magnetic flux density) fields resulting in **H** and **B** vectors at any given point in 3D space
   * Position and field vectors are with respect to the magnet; magnetization is along the Z axis.
 * **Magnet** is an abstract class implementing **IMagnet** and introduces a few traits and behaviors common to any magnet
-* **RectangularMagnet** derivess from **Magnet** and implements the calculations specific to a rectangular magnet per the references cited above
+* **RectangularMagnet** derivess from **Magnet** and implements the calculations specific to a rectangular magnet per the references cited above.
+The implementation is an unoptimized transcription into code of the referenced equations.
 * **MagnetWithPosition2** derives from **IMagnet** and implements a wrapper around a given magnet to position and orient it in a 2D space to faciliate 2D modeling.
 * **CubicMagnet** is a convenience class derived from **RectangularMagnet** to simplify dimensioning.
 * **Constants** contains various useful unit conversion values in addition to physical constants
