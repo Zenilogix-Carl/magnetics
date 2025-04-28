@@ -1,5 +1,5 @@
 # Magnetics
-This repo contains a C# class library for calculating the field around a magnet. It is an unfinished work, and currently only models rectangular magnets.
+This repo contains a C# class library for calculating the magnetic flux density (measured in Tesla) and magnetic field intensity (measured in Henry or A/m) field vectors at any point around a magnet. It is an unfinished work, and currently only models rectangular magnets.
 
 ## Background
 I wanted to design a sensor which could measure the rotation (angular position) as one part of an assembly is rotated within another. 
