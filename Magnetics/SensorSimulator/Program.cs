@@ -25,12 +25,12 @@ namespace SensorSimulator
     /// </remarks>
     public class Program
     {
-        private const int SweepAngleDegrees = 30;
-        private const double MagnetCenterRadiusInches = 1.8;
+        private const int SweepAngleDegrees = 50;
+        private const double MagnetCenterRadiusInches = 1.1;
         private const double MagnetSizeInches = 0.25;
         private const double MagnetSurfaceFieldGauss = 4601;
 
-        private const double SensorRadiusInches = 1.3;
+        private const double SensorRadiusInches = 0.6;
 
         private const int StepDegrees = 1;
         private const int HalfAngleDegrees = SweepAngleDegrees / 2;
