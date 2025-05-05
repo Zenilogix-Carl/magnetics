@@ -25,15 +25,14 @@ namespace SensorSimulator
     /// </remarks>
     public class Program
     {
-        private const int SweepAngleDegrees = 60;
-        private const double MagnetCenterRadiusInches = 1.05;
+        private const int SweepAngleDegrees = 30;
+        private const double MagnetCenterRadiusInches = 1.8;
         private const double MagnetSizeInches = 0.25;
         private const double MagnetSurfaceFieldGauss = 4601;
 
-        private const double SensorRadiusInches = 0.595;
-        private const double SensitivityVoltPerTesla = 100;
+        private const double SensorRadiusInches = 1.3;
 
-        private const int StepDegrees = 5;
+        private const int StepDegrees = 1;
         private const int HalfAngleDegrees = SweepAngleDegrees / 2;
 
         public static void Main()
@@ -41,20 +40,16 @@ namespace SensorSimulator
             var m1 = CreateMagnet(new Vector2((float)(MagnetCenterRadiusInches * Constants.MetresPerInch), 0).Rotate(HalfAngleDegrees), HalfAngleDegrees);
             var m2 = CreateMagnet(new Vector2((float)(MagnetCenterRadiusInches * Constants.MetresPerInch), 0).Rotate(-HalfAngleDegrees), 180 - HalfAngleDegrees);
 
-            var sensor = new Sensor2D
-            {
-                Sensitivity = SensitivityVoltPerTesla, // mV/mT
-                OutputMinimum = 0, // V
-                OutputMaximum = 5.0, // V
-                QuiescentOutput = 2.5 // V
-            };
+            var sensor = new Drv5055A1();
 
             var sensorNominalPosition = new Vector2((float)(SensorRadiusInches * Constants.MetresPerInch), 0);
+            var magnetToMagnetVector = m1.Position - m2.Position;
+            var magnetCenterSpacingInches = Math.Sqrt(magnetToMagnetVector.X*magnetToMagnetVector.X + magnetToMagnetVector.Y*magnetToMagnetVector.Y) * Constants.InchesPerMeter;
 
-            Console.WriteLine($"Magnet centers at radius {MagnetCenterRadiusInches:F2}\" +/-{HalfAngleDegrees} deg. {MagnetSizeInches:F2}\" cube, {MagnetSurfaceFieldGauss} Gauss surface field");
-            Console.WriteLine($"Sensor at radius {SensorRadiusInches:F3}\" {SensitivityVoltPerTesla}mV/mT");
+            Console.WriteLine($"Magnet centers at radius {MagnetCenterRadiusInches:F2}\" center-to-center spacing {magnetCenterSpacingInches:F2}\" +/-{HalfAngleDegrees} deg. {MagnetSizeInches:F2}\" cube, {MagnetSurfaceFieldGauss} Gauss surface field");
+            Console.WriteLine($"Sensor at radius {SensorRadiusInches:F3}\" {sensor.Sensitivity}mV/mT");
 
-            Console.WriteLine($"Angle\tB(mT)\tV");
+            Console.WriteLine($"Angle\tB(mT)\tV\tNon-Linear");
             for (var i = -HalfAngleDegrees; i <= HalfAngleDegrees; i += StepDegrees)
             {
                 sensor.Position = sensorNominalPosition.Rotate(i);
@@ -62,7 +57,7 @@ namespace SensorSimulator
                 var bSum = m1.B(sensor.Position) + m2.B(sensor.Position); // combined field at sensor location
                 var bSensor = sensor.GetFieldComponent(bSum); // component of bSum sensed by sensor
                 var v = sensor.GetOutput(bSum); // sensor output (V)
-                Console.WriteLine($"{i}\t{bSensor * 1000:F1}\t{v:F2}"); // show field strength in mT
+                Console.WriteLine($"{i}\t{bSensor * 1000:F1}\t{v:F2}\t{(sensor.IsInLinearRange(bSum)?"":"*")}"); // show field strength in mT
             }
         }
 
