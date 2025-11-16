@@ -12,7 +12,7 @@ In my test rig, the magnets moved and the sensor was fixed, but we can think of 
 
 * Two magnets are placed a set distance from an axis of rotation; in other words, both magnets lie on an arc at some radius from the axis.
 * One magnet has its north pole facing the axis, the other has its south pole facing the axis
-* The sensor detects the amplitude of the magnetic field vector component perpendicular to its face and outputs a value in proportional to that amplitude; it is insensitive to magnetic field components oriented in-plane with the sensor face.
+* The sensor detects the amplitude of the magnetic field vector component perpendicular to its face and outputs a value proportional to that amplitude; it is insensitive to magnetic field components oriented in-plane with the sensor face.
 * The sensor moves on an arc inside the arc of the magnets and is always facing directly away from the axis
 * The sensor will output a "quiescent" value at the midpoint between the magnets where their effects along the sensor axis cancel out, a peak value when nearest one pole and trough value when nearest the other.
 
